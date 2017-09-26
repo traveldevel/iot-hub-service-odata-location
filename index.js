@@ -69,6 +69,8 @@ var model = {
             "longitude": { "type": "Edm.Decimal"},
             "accuracy": { "type": "Edm.Integer"},
             "speed": { "type": "Edm.Integer"},
+            "elevation": { "type": "Edm.Integer"},
+            "heading": { "type": "Edm.String"},
             "recorded_time": { "type": "Edm.DateTime"},
             "created_at": { "type": "Edm.DateTime"}
         }
