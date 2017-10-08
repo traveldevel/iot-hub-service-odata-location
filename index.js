@@ -7,7 +7,7 @@ require('dotenv').config();
 const express = require('express');
 const ODataServer = require("simple-odata-server");
 const MongoClient = require('mongodb').MongoClient;
-const cors = require("cors");
+const cors = require("express-cors");
 const cfenv = require("cfenv");
 const basicAuth = require('basic-auth');
 
@@ -103,6 +103,11 @@ MongoClient.connect(mongoUrl, function(err, db) {
 
 // auth global function
 const auth = function (req, res, next) {
+
+    if(req.method === "OPTIONS"){
+        return next();
+    }
+
     function unauthorized(res) {
         res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
         return res.sendStatus(401);
@@ -123,7 +128,12 @@ const auth = function (req, res, next) {
 
 // Create app variable to initialize Express 
 var app = express();
-app.use(cors());
+
+app.use(cors({
+    allowedOrigins: [
+        'localhost:8080', 'iot-hub-ui-app-shared-new.cfapps.io', 'iothubkafkashared.westeurope.cloudapp.azure.com'
+    ]
+}));
 
 // The directive to set app route path.
 app.use("/", auth, function (req, res) {
